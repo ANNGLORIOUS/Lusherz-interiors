@@ -1,3 +1,5 @@
+import BookingForm from '../Components/BookingForm.jsx'
+
 const contactInfo = [
   { label: 'Email', value: 'hello@lusherzinteriors.com' },
   { label: 'Phone', value: '+44 20 5555 0194' },
@@ -25,32 +27,7 @@ function Contact() {
             ))}
           </div>
 
-          <form className="contact-form">
-            <div className="field-row">
-              <label className="field">
-                <span>Name</span>
-                <input type="text" placeholder="Your name" />
-              </label>
-              <label className="field">
-                <span>Email</span>
-                <input type="email" placeholder="you@example.com" />
-              </label>
-            </div>
-
-            <label className="field">
-              <span>Project type</span>
-              <input type="text" placeholder="Residential, hospitality, commercial..." />
-            </label>
-
-            <label className="field">
-              <span>Tell us about your project</span>
-              <textarea rows="5" placeholder="We’re looking for a warm, modern family home with natural textures and a relaxed luxury feel." />
-            </label>
-
-            <button type="submit" className="primary-btn submit-btn">
-              Send inquiry
-            </button>
-          </form>
+          <BookingForm />
         </div>
       </section>
 

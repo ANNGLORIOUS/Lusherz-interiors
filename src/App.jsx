@@ -1,65 +1,57 @@
-import { useState } from 'react'
+import { BrowserRouter, NavLink, Outlet, Route, Routes, Link } from 'react-router-dom'
 import './App.css'
 import Home from './Pages/Home.jsx'
 import About from './Pages/About.jsx'
 import Services from './Pages/Services.jsx'
 import Portfolio from './Pages/Portfolio.jsx'
 import Contact from './Pages/Contact.jsx'
+import Blog from './Pages/Blog.jsx'
+import ProjectDetails from './Pages/ProjectDetails.jsx'
+import BlogPostDetails from './Pages/BlogPostDetails.jsx'
 
 const navItems = [
-  { key: 'home', label: 'Home' },
-  { key: 'about', label: 'About' },
-  { key: 'services', label: 'Services' },
-  { key: 'portfolio', label: 'Portfolio' },
-  { key: 'contact', label: 'Contact' },
+  { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/services', label: 'Services' },
+  { to: '/portfolio', label: 'Portfolio' },
+  { to: '/journal', label: 'Journal' },
+  { to: '/contact', label: 'Contact' },
 ]
 
-const pages = {
-  home: Home,
-  about: About,
-  services: Services,
-  portfolio: Portfolio,
-  contact: Contact,
-}
-
-function App() {
-  const [activePage, setActivePage] = useState('home')
-  const CurrentPage = pages[activePage]
-
+function Layout() {
   return (
     <div className="page-shell">
       <header className="topbar">
-        <div className="brand-wrap" aria-label="Lusherz Interiors home">
+        <Link to="/" className="brand-wrap" aria-label="Lusherz Interiors home">
           <div className="brand-mark">L</div>
           <div>
             <div className="brand-name">Lusherz</div>
             <div className="brand-tag">Interiors</div>
           </div>
-        </div>
+        </Link>
 
         <nav className="nav" aria-label="Main navigation">
           {navItems.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              className={`nav-button ${activePage === item.key ? 'active-nav' : ''}`}
-              onClick={() => setActivePage(item.key)}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => `nav-button ${isActive ? 'active-nav' : ''}`}
             >
               {item.label}
-            </button>
+            </NavLink>
           ))}
         </nav>
 
         <div className="header-actions">
           <span className="header-call">+44 20 5555 0194</span>
-          <button type="button" className="primary-btn">
+          <Link to="/contact" className="primary-btn">
             Book a consult
-          </button>
+          </Link>
         </div>
       </header>
 
       <main>
-        <CurrentPage />
+        <Outlet />
       </main>
 
       <footer className="site-footer">
@@ -77,10 +69,10 @@ function App() {
 
           <div className="footer-column">
             <h4>Explore</h4>
-            <button type="button" className="footer-link" onClick={() => setActivePage('about')}>About</button>
-            <button type="button" className="footer-link" onClick={() => setActivePage('portfolio')}>Portfolio</button>
-            <button type="button" className="footer-link" onClick={() => setActivePage('services')}>Services</button>
-            <button type="button" className="footer-link" onClick={() => setActivePage('contact')}>Contact</button>
+            <NavLink to="/about" className="footer-link">About</NavLink>
+            <NavLink to="/portfolio" className="footer-link">Portfolio</NavLink>
+            <NavLink to="/services" className="footer-link">Services</NavLink>
+            <NavLink to="/journal" className="footer-link">Journal</NavLink>
           </div>
 
           <div className="footer-column">
@@ -104,6 +96,25 @@ function App() {
         </div>
       </footer>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/:slug" element={<ProjectDetails />} />
+          <Route path="/journal" element={<Blog />} />
+          <Route path="/journal/:slug" element={<BlogPostDetails />} />
+          <Route path="/contact" element={<Contact />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
